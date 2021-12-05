@@ -6,7 +6,9 @@ import lxml
 import smtplib
 from send_email import send_mail
 from requests_html import HTMLSession
-
+EMAIL = os.getenv('EMAIL')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+TO_EMAIL = os.getenv('TO_EMAIL')
 
 URL = "https://www.amiami.com/eng/detail?scode=FIGURE-134393&rank="
 s = HTMLSession()
@@ -22,7 +24,7 @@ try:
         if (s.get_attribute_list('style')) == ["display: none;"] and s.text == 'Pre-orders Closed':
             STATUS = True
     if STATUS == True:
-        send_mail(URL, os.getenv('EMAIL'), os.getenv('EMAIL_PASSWORD'), os.getenv('TO_EMAIL'))
+        send_mail(URL, EMAIL, EMAIL_PASSWORD, TO_EMAIL)
     else:
         pass
 except:
