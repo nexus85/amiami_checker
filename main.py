@@ -10,7 +10,7 @@ EMAIL = os.getenv('EMAIL')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 TO_EMAIL = os.getenv('TO_EMAIL')
 
-URL = "https://www.amiami.com/eng/detail?scode=FIGURE-134393&rank="
+URL = "https://www.amiami.com/eng/detail/?gcode=FIGURE-133759"
 s = HTMLSession()
 response = s.get(URL)
 response.html.render(wait=5, retries=3, scrolldown=2, sleep=5)
