@@ -1,11 +1,10 @@
 import os
 import time
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 from bs4 import BeautifulSoup
 import lxml
 import smtplib
+from send_email import send_mail
 from requests_html import HTMLSession
 EMAIL = os.getenv('EMAIL')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
@@ -16,29 +15,6 @@ s = HTMLSession()
 response = s.get(URL)
 response.html.render(wait=5, retries=3, scrolldown=2, sleep=5)
 about = response.html.find('.item-detail__operation__inner', first=True)
-
-def send_mail(link, email, password, to_email):
-    EMAIL = email
-    EMAIL_PASSWORD = password
-    TO_EMAIL = to_email
-
-    smtpObj = smtplib.SMTP('smtp.mail.ru', 587)
-    smtpObj.starttls()
-    smtpObj.login(EMAIL, EMAIL_PASSWORD)
-
-    message = MIMEMultipart("alternative")
-    message["Subject"] = "Кукла снова доступна для заказа"
-    message["From"] = EMAIL
-    message["To"] = TO_EMAIL
-
-    text = f"""\
-    Кукла снова доступна для заказа, ссылка {link}"""
-    part = MIMEText(text, "plain")
-    message.attach(part)
-
-    smtpObj.sendmail(EMAIL, TO_EMAIL, message.as_string())
-    smtpObj.quit()
-
 
 
 try:
