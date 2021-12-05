@@ -16,20 +16,20 @@ response = s.get(URL)
 response.html.render(wait=5, retries=3, scrolldown=2, sleep=5)
 about = response.html.find('.item-detail__operation__inner', first=True)
 
-
-try:
-    STATUS = False
-    soup = BeautifulSoup(about.raw_html, 'lxml')
-    spans = soup.find_all('span', class_='btn-cart')
-    for s in spans:
-        if (s.get_attribute_list('style')) == ["display: none;"] and s.text == 'Pre-orders Closed':
-            STATUS = True
-    if STATUS == True:
-        send_mail(URL, EMAIL, EMAIL_PASSWORD, TO_EMAIL)
-    else:
+while True:
+    try:
+        STATUS = False
+        soup = BeautifulSoup(about.raw_html, 'lxml')
+        spans = soup.find_all('span', class_='btn-cart')
+        for s in spans:
+            if (s.get_attribute_list('style')) == ["display: none;"] and s.text == 'Pre-orders Closed':
+                STATUS = True
+        if STATUS == True:
+            send_mail(URL, EMAIL, EMAIL_PASSWORD, TO_EMAIL)
+        else:
+            pass
+    except:
         pass
-except:
-    pass
-
+    time.sleep(1800)
 
 
